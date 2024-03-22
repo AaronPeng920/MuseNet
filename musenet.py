@@ -185,8 +185,3 @@ class MuseNetPipeline:
         pad_length = (segment_length - (src_length - effective_length)) % segment_length
         waveform = F.pad(waveform, (0, pad_length), "constant", 0)  
         return waveform
-
-if __name__ == '__main__':
-    model = MuseNetPipeline(16000, 1024, 128, 5, '/home/app/project/MuseNet/logs/musenetlog/version_1/checkpoints/epoch=4-step=25.ckpt', 32, 1, device='cuda')
-    audio_filename = "/home/app/datasets/music/gtzan/vocal_noslience/instrument_blues.00000.wav.reformatted.wav_10.wav.wav"
-    model.pipe(audio_filename)
