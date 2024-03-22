@@ -1,0 +1,58 @@
+datamodule:
+  target: dataset.MelSpectrogramDataModule
+  params:
+    batch_size: 4
+    num_worker: 0
+    sample_rate: 16000
+    n_fft: 1024
+    n_mels: 128   # [1, 128, 157]
+
+    train_dataset: 
+      target: dataset.AudioDataset
+      params:
+        root_dir: /home/app/datasets/music/gtzan
+        max_audio_duration: 5
+        sample_rate: ${datamodule.params.sample_rate}
+
+    val_dataset:
+      target: dataset.AudioDataset
+      params:
+        root_dir: /home/app/datasets/music/gtzan
+        max_audio_duration: 5
+        sample_rate: ${datamodule.params.sample_rate}
+
+model:
+  target: musenet.MuseNetModel
+  params:
+    model:
+      target: musenet.MuseNet
+      params:
+        in_channels: 1
+        model_channels: 32
+        input_size: [128, 157]
+        cls_count: 3
+        ch_mults: [1, 2, 2, 2, 2]
+        num_res_blocks: 2
+        n_heads: 8
+        d_head: 32
+        dropout: 0.0
+
+    lr: 0.001
+    criterion: cross_entropy
+
+logging:
+  save_dir: logs
+  name: musenetlog
+
+trainer:
+  devices: 1
+  accelerator: 'gpu'
+  strategy: 'ddp'
+  max_epochs: 10
+
+seed: 1278
+ckpt_save_top_k: 2
+
+
+
+    

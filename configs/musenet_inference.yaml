@@ -1,0 +1,13 @@
+pipeline:
+  target: musenet.MuseNetPipeline
+  params:
+    sample_rate: 16000
+    n_fft: 1024
+    n_mels: 128   # [1, 128, 157]
+    max_audio_duration: 5
+    ckpt_path: /home/app/project/MuseNet/logs/musenetlog/version_1/checkpoints/epoch=4-step=25.ckpt
+    max_batch_size: 32
+    accuracy: 1
+    save_dir: result
+    device: cpu
+    
